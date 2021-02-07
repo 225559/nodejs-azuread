@@ -30,4 +30,4 @@ exports.creds = {
 exports.destroySessionUrl = 'https://login.microsoftonline.com/common/oauth2/logout?post_logout_redirect_uri=http://localhost:3000';
 
 // For calling API
-exports.resourceURL = 'https://graph.microsoft.com/';
+exports.resourceURL = 'https://<tenant_name>.onmicrosoft.com/<api_path>';

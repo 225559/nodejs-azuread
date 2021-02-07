@@ -160,7 +160,7 @@ app.get('/logout', function (req, res) {
 });
 
 app.get('/callapi', ensureAuthenticated, function (req, res) {
-    var location = 'https://graph.microsoft.com/v1.0/me';
+    var location = 'http://localhost:5000/admin';
     request.get({
         headers: { 'content-type': 'application/json', 'Authorization': 'Bearer ' + req.user.accessToken },
         url: location,
