@@ -6,6 +6,10 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 
+import { config } from './app-config';
+import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -14,9 +18,33 @@ import { ProfileComponent } from './profile/profile.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MsalModule.forRoot({
+      auth: {
+        clientId: config.auth.clientId,
+        authority: 'https://login.microsoftonline.com/' + config.auth.tenant,
+        redirectUri: config.auth.redirectUri,
+      },
+      cache: {
+        cacheLocation: 'localStorage',
+        storeAuthStateInCookie: false,
+      },
+    },
+    {
+      popUp: false,
+      consentScopes: [],
+      unprotectedResources: [],
+      protectedResourceMap: [],
+      extraQueryParameters: {},
+    }),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: MsalInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
