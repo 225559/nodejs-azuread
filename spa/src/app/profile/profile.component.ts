@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { config } from '../app-config';
 
 @Component({
   selector: 'app-profile',
@@ -6,10 +8,21 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
+  profile: any;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
+    this.getProfile();
+  }
+
+  getProfile(): void {
+    this.http.get(config.api.endpoint)
+      .subscribe({
+        next: profile => {
+          this.profile = profile;
+        },
+      });
   }
 
 }

@@ -8,7 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 
 import { config } from './app-config';
 import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -19,6 +19,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     MsalModule.forRoot({
       auth: {
         clientId: config.auth.clientId,
@@ -32,9 +33,11 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     },
     {
       popUp: false,
-      consentScopes: [],
+      consentScopes: config.api.scopes,
       unprotectedResources: [],
-      protectedResourceMap: [],
+      protectedResourceMap: [
+        [config.api.endpoint, config.api.scopes],
+      ],
       extraQueryParameters: {},
     }),
   ],
