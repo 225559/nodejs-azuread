@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { MsalService } from '@azure/msal-angular';
+import { Component } from '@angular/core';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { authConfig } from './app-config';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
   title = 'spa';
 
-  constructor(private authService: MsalService) {}
-
-  ngOnInit(): void {
-    this.authService.handleRedirectCallback((err, res) => {
-      if (err) {
-        console.error('Redirect error: ', err.errorMessage);
-        return;
-      }
-      console.log('Redirect success: ', res?.accessToken);
-    });
+  constructor(private oauth: OAuthService) {
+    this.oauth.configure(authConfig);
+    this.oauth.loadDiscoveryDocumentAndTryLogin()
+      .then(() => {
+        let idc = this.oauth.getIdentityClaims();
+        if (idc) {
+          console.log(idc);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    this.oauth.setupAutomaticSilentRefresh();
   }
+
 }
