@@ -6,48 +6,24 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 
-import { config } from './app-config';
-import { MsalInterceptor, MsalModule } from '@azure/msal-angular';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    MsalModule.forRoot({
-      auth: {
-        clientId: config.auth.clientId,
-        authority: 'https://login.microsoftonline.com/' + config.auth.tenant,
-        redirectUri: config.auth.redirectUri,
-      },
-      cache: {
-        cacheLocation: 'localStorage',
-        storeAuthStateInCookie: false,
-      },
-    },
-    {
-      popUp: false,
-      consentScopes: config.api.scopes,
-      unprotectedResources: [],
-      protectedResourceMap: [
-        [config.api.endpoint, config.api.scopes],
-      ],
-      extraQueryParameters: {},
-    }),
+    OAuthModule.forRoot(),
   ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true,
-    }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
