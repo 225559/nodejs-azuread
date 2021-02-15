@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-import { OAuthService } from 'angular-oauth2-oidc';
-import { authConfig } from './app-config';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-root',
@@ -10,18 +9,17 @@ import { authConfig } from './app-config';
 export class AppComponent {
   title = 'spa';
 
-  constructor(private oauth: OAuthService) {
-    this.oauth.configure(authConfig);
-    this.oauth.loadDiscoveryDocumentAndTryLogin()
-      .then(() => {
-        let idc = this.oauth.getIdentityClaims();
-        if (idc) {
-          console.log(idc);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    this.oauth.setupAutomaticSilentRefresh();
+  constructor(private auth: AuthService) {}
+
+  signIn(): void {
+    this.auth.signIn();
+  }
+
+  signOut(): void {
+    this.auth.signOut();
+  }
+
+  get hasAccess() {
+    return this.auth.hasAccess();
   }
 }

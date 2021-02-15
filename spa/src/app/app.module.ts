@@ -9,6 +9,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { HttpClientModule } from '@angular/common/http';
 import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './auth.guard';
+import { NotGuardedComponent } from './not-guarded/not-guarded.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,7 @@ import { LoginComponent } from './login/login.component';
     HomeComponent,
     ProfileComponent,
     LoginComponent,
+    NotGuardedComponent,
   ],
   imports: [
     BrowserModule,
@@ -23,7 +26,7 @@ import { LoginComponent } from './login/login.component';
     HttpClientModule,
     OAuthModule.forRoot(),
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

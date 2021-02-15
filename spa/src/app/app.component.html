@@ -1,4 +1,6 @@
 <a href="/">Home</a>&nbsp;
 <a href="/profile">Profile</a>&nbsp;
-<a href="/login">Log in</a>&nbsp;
+<a href="/not-guarded">Not Guarded Route</a>&nbsp;
+<button *ngIf="!hasAccess" (click)="signIn()">Sign In</button>
+<button *ngIf="hasAccess" (click)="signOut()">Sign Out</button>
 <router-outlet></router-outlet>
